@@ -29,7 +29,7 @@ SkiJumpGame.prototype = {
     create: function() {
         this.world.setBounds(0, 0, width, height);
 
-        this.bg = this.add.tileSprite(0, 0, width, height, 'bg');
+        this.bg = this.add.tileSprite(50, 0, width, height, 'bg');
         this.stars = this.add.group();
         this.dude = this.add.sprite(50, 0, 'dude');
         var style = {

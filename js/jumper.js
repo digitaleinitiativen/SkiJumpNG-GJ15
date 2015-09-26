@@ -11,10 +11,11 @@ SkiJump.Jumper.prototype.constructor = SkiJump.Jumper;
 SkiJump.Jumper.prototype.create = function() {
     this.animations.add('stand', [20], 1, false);
     this.anchor.setTo(0.5, 0);
+    this.physics.ninja.enable(this, this.width/2);
 };
 
 SkiJump.Jumper.prototype.update = function() {
-    if (this.game.input.keyboard.isDown(Phaser.Keyboard.SPACE)) {
+    if (this.game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)) {
         if (
             this.body.x >= SkiJump.consts.JUMP_AREA_START &&
             this.body.x <= SkiJump.consts.JUMP_AREA_END
