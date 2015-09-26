@@ -153,7 +153,6 @@ SkiJump.State.prototype = {
             this.jumper.hasJumpPower &&
             !this.hasJumped
         ) {
-            console.log('LOL');
             this.hasJumped = true;
             this.jumper.body.y -= SkiJump.consts.BOOST_FACTOR * ((this.jumper.finalJumpPower > 0) ? (this.jumper.finalJumpPower / 100) : 0);
         }
