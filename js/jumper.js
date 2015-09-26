@@ -12,8 +12,8 @@ SkiJump.Jumper = function(game, x, y, key) {
     Phaser.Sprite.call(this, game, x, y, key, 0);
 
     this.animations.add('stand', [19], 1);
-    this.animations.add('landing', [15, 16, 17, 18, 19], 10);
-    this.animations.add('flying', [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], 20);
+    this.animations.add('landing', [14, 15, 16, 17, 18, 19], 10);
+    this.animations.add('flying', [4, 5, 6, 7, 8, 9, 10, 11, 12, 13], 20);
 };
 
 SkiJump.Jumper.prototype = Object.create(Phaser.Sprite.prototype);

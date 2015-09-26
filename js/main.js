@@ -19,7 +19,7 @@
 
     SkiJump = global.SkiJump || {
         consts: consts,
-        game: new Phaser.Game(consts.WIDTH / 4, consts.HEIGHT / 4, Phaser.AUTO, 'game')
+        game: new Phaser.Game(consts.WIDTH / 3, consts.HEIGHT / 5, Phaser.AUTO, 'game')
     };
 
     global.SkiJump = SkiJump;
@@ -28,6 +28,10 @@
     window.addEventListener('keydown', function(event) {
         if ([32, 37, 38, 39, 40].indexOf(event.keyCode) > -1) {
             event.preventDefault();
+        }
+
+        if (event.keyCode === 13) {
+            global.SkiJump.game.state.start('Playing');
         }
     }, false);
 })(this)

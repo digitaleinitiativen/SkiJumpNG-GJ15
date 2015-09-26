@@ -1,4 +1,4 @@
-SkiJump.State = function() {
+SkiJump.Playing = function() {
     this.bg = null;
     this.groundLayer = null;
     this.tiles = null;
@@ -8,7 +8,7 @@ SkiJump.State = function() {
     this.isLanded = false;
 };
 
-SkiJump.State.prototype = {
+SkiJump.Playing.prototype = {
     init: function() {
         this.physics.startSystem(Phaser.Physics.NINJA);
     },
@@ -159,4 +159,16 @@ SkiJump.State.prototype = {
     }
 };
 
-SkiJump.game.state.add('State', SkiJump.State, true);
+SkiJump.Welcome = function() {};
+
+SkiJump.Welcome.prototype = {
+    this.scorebox = this.add.text(256, 256, 'Press Space power up and "J" at the right time to get boosted', {
+        font: 'MS Comic Sans',
+        fontSize: '20'
+    });
+
+    this.scorebox.fixedToCamera = true;
+};
+
+SkiJump.game.state.add('Welcome', SkiJump.Welcome);
+SkiJump.game.state.add('Playing', SkiJump.Playing);
