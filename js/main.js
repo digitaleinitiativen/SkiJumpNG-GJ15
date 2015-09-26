@@ -19,7 +19,7 @@
 
     SkiJump = global.SkiJump || {
         consts: consts,
-        game: new Phaser.Game(consts.WIDTH / 4, consts.HEIGHT / 4, Phaser.AUTO, 'game')
+        game: new Phaser.Game(consts.WIDTH / 3, consts.HEIGHT / 4, Phaser.AUTO, 'game')
     };
 
     global.SkiJump = SkiJump;

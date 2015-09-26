@@ -6,9 +6,13 @@ SkiJump.State = function() {
     this.scoreBox = null;
     this.meters = 0;
     this.isLanded = false;
+    this.text1Displayed = false;
+    this.text2Displayed = false;
 };
 
 SkiJump.State.prototype = {
+
+
     init: function() {
         this.physics.startSystem(Phaser.Physics.NINJA);
     },
@@ -37,7 +41,7 @@ SkiJump.State.prototype = {
         this.add.sprite(1600,1400, 'mountain');
         this.add.sprite(1800,1250, 'mountain');
         this.add.sprite(1800,1250, 'mountain');
-        this.add.sprite(300,50, 'satellite');
+        this.add.sprite(1700,50, 'satellite');
         this.add.sprite(500,150, 'star');
         this.add.sprite(800,20, 'star');
         this.add.sprite(700,250, 'star');
@@ -57,14 +61,6 @@ SkiJump.State.prototype = {
 
         this.add.tileSprite(SkiJump.consts.BOOSTER.startPositions[0], 0, SkiJump.consts.BOOSTER.width, SkiJump.consts.HEIGHT, 'lightbeam');
         this.add.tileSprite(SkiJump.consts.BOOSTER.startPositions[1], 0, SkiJump.consts.BOOSTER.width, SkiJump.consts.HEIGHT, 'lightbeam');
-        //this.firstStep = this.add.sprite(500, 300, 'sky');
-
-        var style = {
-            fill: '#fff'
-        };
-
-        this.scorebox = this.add.text(10, 10, this.meters + ' Meter', style);
-        this.scorebox.fixedToCamera = true;
 
         this.world.setBounds(0, 0, SkiJump.consts.WIDTH, SkiJump.consts.HEIGHT);
 
@@ -95,10 +91,23 @@ SkiJump.State.prototype = {
         this.jumper.body.friction = 0.01;
 
         this.game.camera.follow(this.jumper);
+
+
+        var style = {
+            font: 'Comic Sans MS',
+            fontSize: '30px',
+            fontWeight: 'bold',
+            fill: '#fff',
+            stroke: '#000',
+            strokeThickness: 3
+        };
+
+        this.scorebox = this.add.text(10, 10, this.meters + ' Meter', style);
+        this.scorebox.fixedToCamera = true;
     },
 
     update: function() {
-        var angle = 0, pivotY = 0;
+        var angle = 0, pivotY = 0, style;
 
         for (var i = 0; i < this.tiles.length; i++) {
             var hit = this.jumper.body.aabb.collideAABBVsTile(this.tiles[i].tile)
@@ -155,6 +164,37 @@ SkiJump.State.prototype = {
         ) {
             this.hasJumped = true;
             this.jumper.body.y -= SkiJump.consts.BOOST_FACTOR * ((this.jumper.finalJumpPower > 0) ? (this.jumper.finalJumpPower / 100) : 0);
+        }
+
+        if (this.jumper.jump1Done && this.text1Displayed === false) {
+            style = {
+                font: 'Comic Sans MS',
+                fontSize: '28px',
+                fontWeight: 'bold',
+                fill: '#00ff00',
+                stroke: '#000',
+                strokeThickness: 3
+            };
+            this.jumperText = this.add.text(256, 200, 'EXTRA BOOST!', style);
+            this.jumperText.fixedToCamera = true;
+            this.game.add.tween(this.jumperText).to({alpha: 0}, 1000, Phaser.Easing.Linear.None, true);
+
+            this.text1Displayed = true;
+        }
+
+        if (this.jumper.jump2Done && this.text2Displayed === false) {
+            style = {
+                font: 'Comic Sans MS',
+                fontSize: '28px',
+                fontWeight: 'bold',
+                fill: '#00ff00',
+                stroke: '#000',
+                strokeThickness: 3
+            };
+            this.jumperText2 = this.add.text(256, 200, 'EXTRA BOOST!', style);
+            this.jumperText2.fixedToCamera = true;
+            this.game.add.tween(this.jumperText2).to({alpha: 0}, 1000, Phaser.Easing.Linear.None, true);
+            this.text2Displayed = true;
         }
     }
 };
