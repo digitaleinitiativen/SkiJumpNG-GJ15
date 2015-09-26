@@ -1,0 +1,44 @@
+{ "height":11,
+ "layers":[
+        {
+         "compression":"zlib",
+         "data":"eJzt0aENgFAUQ9EO8eZgMpZAsTYIzDdIqDgnqW9yE5ocfx9gsUeTJhNNmkw0aTJZm2z3zmd8b14GAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAvwu5tQX1",
+         "encoding":"base64",
+         "height":11,
+         "name":"Tile Layer 1",
+         "opacity":1,
+         "type":"tilelayer",
+         "visible":true,
+         "width":25,
+         "x":0,
+         "y":0
+        }],
+ "nextobjectid":1,
+ "orientation":"orthogonal",
+ "properties":
+    {
+
+    },
+ "renderorder":"right-down",
+ "tileheight":72,
+ "tilesets":[
+        {
+         "firstgid":1,
+         "image":"kenney.png",
+         "imageheight":490,
+         "imagewidth":1470,
+         "margin":0,
+         "name":"hill",
+         "properties":
+            {
+
+            },
+         "spacing":0,
+         "tilecount":147,
+         "tileheight":70,
+         "tilewidth":70
+        }],
+ "tilewidth":72,
+ "version":1,
+ "width":100
+}
