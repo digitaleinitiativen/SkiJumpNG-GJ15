@@ -8,10 +8,10 @@ SkiJump.State = function() {
     this.isLanded = false;
     this.text1Displayed = false;
     this.text2Displayed = false;
+    this.applauseStarted = false;
 };
 
 SkiJump.State.prototype = {
-
 
     init: function() {
         this.physics.startSystem(Phaser.Physics.NINJA);
@@ -29,35 +29,37 @@ SkiJump.State.prototype = {
         this.load.image('public', 'assets/public.png');
         this.load.image('sky', 'assets/background.png');
         this.load.image('lightbeam', 'assets/lightbeam.png');
+        this.load.audio('applause', ['assets/applause.ogg']);
+        this.load.audio('checkpoint', ['assets/checkpoint.ogg']);
+        this.load.audio('jump', ['assets/jump2.ogg']);
     },
 
     create: function() {
         var slopeMap;
 
-        this.bg = this.add.tileSprite(0, 0, SkiJump.consts.WIDTH+100, SkiJump.consts.HEIGHT, 'bg');
-        this.add.sprite(1000,1250, 'mountain');
-        this.add.sprite(1200,1350, 'mountain');
-        this.add.sprite(1400,1300, 'mountain');
-        this.add.sprite(1600,1400, 'mountain');
-        this.add.sprite(1800,1250, 'mountain');
-        this.add.sprite(1800,1250, 'mountain');
-        this.add.sprite(1700,50, 'satellite');
-        this.add.sprite(500,150, 'star');
-        this.add.sprite(800,20, 'star');
-        this.add.sprite(700,250, 'star');
-        this.add.sprite(1200,250, 'star');
-        this.add.sprite(850,400, 'star');
-        this.add.sprite(200,200, 'tree');
-        this.add.sprite(180,190, 'tree');
-        this.add.sprite(170,180, 'tree');
-        this.add.sprite(800,720, 'tree');
-        this.add.sprite(950,900, 'tree');
-        this.add.sprite(1000,950, 'tree');
-        this.add.sprite(1500,1420, 'tree');
-        this.add.sprite(1600,1550, 'public');
-        this.add.sprite(1440,1550, 'public');
-        this.add.sprite(1900,1553, 'public');
-
+        this.bg = this.add.tileSprite(0, 0, SkiJump.consts.WIDTH + 100, SkiJump.consts.HEIGHT, 'bg');
+        this.add.sprite(1000, 1250, 'mountain');
+        this.add.sprite(1200, 1350, 'mountain');
+        this.add.sprite(1400, 1300, 'mountain');
+        this.add.sprite(1600, 1400, 'mountain');
+        this.add.sprite(1800, 1250, 'mountain');
+        this.add.sprite(1800, 1250, 'mountain');
+        this.add.sprite(1700, 50, 'satellite');
+        this.add.sprite(500, 150, 'star');
+        this.add.sprite(800, 20, 'star');
+        this.add.sprite(700, 250, 'star');
+        this.add.sprite(1200, 250, 'star');
+        this.add.sprite(850, 400, 'star');
+        this.add.sprite(200, 200, 'tree');
+        this.add.sprite(180, 190, 'tree');
+        this.add.sprite(170, 180, 'tree');
+        this.add.sprite(800, 720, 'tree');
+        this.add.sprite(950, 900, 'tree');
+        this.add.sprite(1000, 950, 'tree');
+        this.add.sprite(1500, 1420, 'tree');
+        this.add.sprite(1600, 1550, 'public');
+        this.add.sprite(1440, 1550, 'public');
+        this.add.sprite(1900, 1553, 'public');
 
         this.add.tileSprite(SkiJump.consts.BOOSTER.startPositions[0], 0, SkiJump.consts.BOOSTER.width, SkiJump.consts.HEIGHT, 'lightbeam');
         this.add.tileSprite(SkiJump.consts.BOOSTER.startPositions[1], 0, SkiJump.consts.BOOSTER.width, SkiJump.consts.HEIGHT, 'lightbeam');
@@ -92,7 +94,6 @@ SkiJump.State.prototype = {
 
         this.game.camera.follow(this.jumper);
 
-
         var style = {
             font: 'Comic Sans MS',
             fontSize: '30px',
@@ -104,6 +105,9 @@ SkiJump.State.prototype = {
 
         this.scorebox = this.add.text(10, 10, this.meters + ' Meter', style);
         this.scorebox.fixedToCamera = true;
+        this.checkpointSound = this.add.audio('checkpoint');
+        this.applauseSound = this.add.audio('applause');
+        this.jumpSound = this.add.audio('jump');
     },
 
     update: function() {
@@ -116,7 +120,7 @@ SkiJump.State.prototype = {
                     case 1:
                         angle = 0;
                         pivotY = 0;
-                        
+
                         break;
                     case 2:
                         angle = 45;
@@ -155,15 +159,20 @@ SkiJump.State.prototype = {
 
         if (this.jumper.body.x > SkiJump.consts.BRAKING_AREA_START) {
             this.jumper.body.friction = 0.1;
+            if (this.applauseStarted === false) {
+                this.applauseSound.play();
+                this.applauseStarted = true;
+            }
         }
 
         if (
             this.jumper.body.x >= SkiJump.consts.JUMP_AREA_END + 1 &&
-            this.jumper.hasJumpPower &&
-            !this.hasJumped
+            this.jumper.hasJumpPower && !this.hasJumped
         ) {
             this.hasJumped = true;
             this.jumper.body.y -= SkiJump.consts.BOOST_FACTOR * ((this.jumper.finalJumpPower > 0) ? (this.jumper.finalJumpPower / 100) : 0);
+
+            this.jumpSound.play();
         }
 
         if (this.jumper.jump1Done && this.text1Displayed === false) {
@@ -180,6 +189,8 @@ SkiJump.State.prototype = {
             this.game.add.tween(this.jumperText).to({alpha: 0}, 1000, Phaser.Easing.Linear.None, true);
 
             this.text1Displayed = true;
+
+            this.checkpointSound.play();
         }
 
         if (this.jumper.jump2Done && this.text2Displayed === false) {
@@ -195,6 +206,7 @@ SkiJump.State.prototype = {
             this.jumperText2.fixedToCamera = true;
             this.game.add.tween(this.jumperText2).to({alpha: 0}, 1000, Phaser.Easing.Linear.None, true);
             this.text2Displayed = true;
+            this.checkpointSound.play();
         }
     }
 };
