@@ -2,6 +2,9 @@ SkiJump.State = function() {
     this.bg = null;
     this.groundLayer = null;
     this.tiles = null;
+    this.scoreBox = null;
+    this.meters = 0;
+    this.isLanded = false;
 };
 
 SkiJump.State.prototype = {
@@ -19,6 +22,7 @@ SkiJump.State.prototype = {
         this.load.image('star', 'assets/star.png');
         this.load.image('tree', 'assets/tree.png');
         this.load.image('public', 'assets/public.png');
+        this.load.image('sky', 'assets/background.png');
     },
 
     create: function() {
@@ -47,7 +51,14 @@ SkiJump.State.prototype = {
         this.add.sprite(1600,1550, 'public');
         this.add.sprite(1440,1550, 'public');
         this.add.sprite(1900,1553, 'public');
+        //this.firstStep = this.add.sprite(500, 300, 'sky');
 
+        var style = {
+            fill: '#fff'
+        };
+
+        this.scorebox = this.add.text(10, 10, this.meters + ' Meter', style);
+        this.scorebox.fixedToCamera = true;
 
         this.world.setBounds(0, 0, SkiJump.consts.WIDTH, SkiJump.consts.HEIGHT);
 
@@ -72,6 +83,7 @@ SkiJump.State.prototype = {
         this.jumper = new SkiJump.Jumper(this.game, 64, 64, 'jumper');
         this.game.add.existing(this.jumper);
         this.game.physics.ninja.enable(this.jumper);
+        //this.game.physics.ninja.enable(this.firstStep);
         this.jumper.body.bounce = 0;
         this.jumper.body.friction = 0.01;
 
@@ -100,6 +112,12 @@ SkiJump.State.prototype = {
                 } else {
                     this.jumper.body.friction = 0.01;
                 }
+
+                if (this.jumper.body.x > SkiJump.consts.JUMP_AREA_END && !this.isLanded) {
+                    this.meters = this.jumper.body.x - SkiJump.consts.JUMP_AREA_END;
+                    this.isLanded = true;
+                    this.scorebox.text = parseInt(this.meters) + ' Meter';
+                }
             }
         }
         this.jumper.angle = angle;
@@ -109,6 +127,8 @@ SkiJump.State.prototype = {
         if (this.jumper.body.x > 1800) {
             this.jumper.body.friction = 0.1;
         }
+
+
     }
 };
 
