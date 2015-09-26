@@ -1,38 +1,28 @@
-var width = 2048;
-var height = 2048;
-
-var game = new Phaser.Game(800, 600, Phaser.AUTO, 'game');
-
-SkiJump.Game = function(game) {
-    this.game = game;
+SkiJump.State = function() {
     this.bg = null;
-    this.dude = null;
-    this.cursors = null;
-    this.stars = null;
-    this.scorebox = null;
-    this.starCount = 0;
-    this.hill = null;
     this.groundLayer = null;
     this.tiles = null;
 };
 
-SkiJump.Game.prototype = {
+SkiJump.State.prototype = {
     init: function() {
         this.physics.startSystem(Phaser.Physics.NINJA);
-        this.cursors = this.input.keyboard.createCursorKeys();
     },
 
     preload: function() {
+        this.load.spritesheet('jumper', 'assets/jumperdude.png', 64, 64, 20);
         this.load.tilemap('tilemap', 'assets/large-hill.json', null, Phaser.Tilemap.TILED_JSON);
         this.load.image('ball', 'assets/shinyball.png');
         this.load.image('sky', 'assets/sky2.png');
         this.load.image('tiles', 'assets/kenney.png');
-
-        this.load.baseURL = 'http://skijump.lo/';
     },
 
     create: function() {
+        var jumper, slopeMap;
+
         this.stage.backgroundColor = "#a9f0ff";
+
+        this.world.setBounds(0, 0, SkiJump.consts.WIDTH, SkiJump.consts.HEIGHT);
 
         //this.game.world.setBounds(0, 0, width, height);
         this.map = this.add.tilemap('tilemap');
@@ -43,12 +33,8 @@ SkiJump.Game.prototype = {
 
         this.map.setCollisionBetween(1, 100, true, 'GroundLayer');
 
-        //Change the world size to match the size of this layer
-
-
-
         //This maps the tiles in your sprite sheet to the phaser ninja tiles to be used
-        var slopeMap = {'129': 2, '130': 1, '20': 1, '66': 1};
+        slopeMap = {'129': 2, '130': 1, '20': 1, '66': 1};
         this.tiles = this.game.physics.ninja.convertTilemap(this.map, this.groundLayer, slopeMap);
 
 
@@ -65,6 +51,9 @@ SkiJump.Game.prototype = {
         this.game.camera.follow(this.sprite);
 
 
+        // add the player to the stage
+        jumper = new SkiJump.Jumper(this.game, 64, 64, 'jumper');
+        this.game.add.existing(jumper);
     },
 
     update: function() {
@@ -76,4 +65,4 @@ SkiJump.Game.prototype = {
     }
 };
 
-game.state.add('Level One', SkiJump.Game, true);
+SkiJump.game.state.add('State', SkiJump.State, true);
