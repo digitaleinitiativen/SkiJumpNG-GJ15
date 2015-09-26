@@ -28,6 +28,8 @@ SkiJump.Playing.prototype = {
         this.load.image('public', 'assets/public.png');
         this.load.image('sky', 'assets/background.png');
         this.load.image('lightbeam', 'assets/lightbeam.png');
+        this.load.image('cloud1', 'assets/cloud1.png');
+        this.load.image('cloud2', 'assets/cloud2.png');
         this.load.audio('applause', ['assets/applause.ogg']);
         this.load.audio('checkpoint', ['assets/checkpoint.ogg']);
         this.load.audio('jump', ['assets/jump2.ogg']);
@@ -60,6 +62,10 @@ SkiJump.Playing.prototype = {
         this.add.sprite(1600, 1550, 'public');
         this.add.sprite(1440, 1550, 'public');
         this.add.sprite(1900, 1553, 'public');
+        this.add.sprite(1200, 1053, 'cloud1');
+        this.add.sprite(1500, 980, 'cloud1');
+        this.add.sprite(1300, 880, 'cloud2');
+        this.add.sprite(1130, 680, 'cloud2');
 
         this.add.tileSprite(SkiJump.consts.BOOSTER.startPositions[0], 0, SkiJump.consts.BOOSTER.width, SkiJump.consts.HEIGHT, 'lightbeam');
         this.add.tileSprite(SkiJump.consts.BOOSTER.startPositions[1], 0, SkiJump.consts.BOOSTER.width, SkiJump.consts.HEIGHT, 'lightbeam');
