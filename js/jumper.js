@@ -4,6 +4,7 @@ SkiJump.Jumper = function(game, x, y, key) {
     this.finalJumpPower = 0;
     this.hasJumpPower = false;
     this.tryToJump = false;
+    this.jumps = 1;
 
     Phaser.Sprite.call(this, game, x, y, key, 0);
 };
@@ -13,8 +14,7 @@ SkiJump.Jumper.prototype.constructor = SkiJump.Jumper;
 
 SkiJump.Jumper.prototype.create = function() {
     this.animations.add('stand', [20], 1, false);
-    this.anchor.setTo(0.5, 0);
-    this.physics.ninja.enable(this, this.width/2);
+    this.physics.ninja.enable(this, this.width / 2);
 };
 
 SkiJump.Jumper.prototype.update = function() {
@@ -35,6 +35,13 @@ SkiJump.Jumper.prototype.update = function() {
     ) {
         this.hasJumpPower = true;
         this.finalJumpPower = this.jumpPower;
+    }
+
+    if (this.game.input.keyboard.isDown(Phaser.Keyboard.A) && this.jumps < 2) {
+        //SkiJump.consts.BOOST_FACTOR
+        this.body.y = this.body.y - 2;
+        this.body.x = this.body.x + 2;
+        this.jumps += 1;
     }
 };
 
