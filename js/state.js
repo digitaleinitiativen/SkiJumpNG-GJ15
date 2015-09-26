@@ -130,8 +130,6 @@ SkiJump.State.prototype = {
         this.jumper.angle = angle;
         this.jumper.pivot.y = pivotY;
 
-        this.jumper.body.touching.down;
-
         if (this.jumper.body.x > SkiJump.consts.BRAKING_AREA_START) {
             this.jumper.body.friction = 0.1;
         }
@@ -141,7 +139,6 @@ SkiJump.State.prototype = {
             this.jumper.hasJumpPower &&
             !this.hasJumped
         ) {
-            console.log(this.jumper.finalJumpPower);
             this.hasJumped = true;
             this.jumper.body.y -= SkiJump.consts.BOOST_FACTOR * ((this.jumper.finalJumpPower > 0) ? (this.jumper.finalJumpPower / 100) : 0);
         }
