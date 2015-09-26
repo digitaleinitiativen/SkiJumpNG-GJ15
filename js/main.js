@@ -8,8 +8,10 @@
         BOOST_FACTOR: 5,
         PIXEL_TO_METER: 0.2,
         BOOSTER:{
-            'startPositions': [1500],
-            'width': 20
+            'startPositions': [550, 800],
+            'width': 16,
+            'area': 30,
+            'strength': 1
         }
     };
 

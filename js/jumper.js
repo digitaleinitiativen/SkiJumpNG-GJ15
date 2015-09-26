@@ -4,7 +4,8 @@ SkiJump.Jumper = function(game, x, y, key) {
     this.finalJumpPower = 0;
     this.hasJumpPower = false;
     this.tryToJump = false;
-    this.jumps = 1;
+    this.jump1Done = false;
+    this.jump2Done = false;
 
     Phaser.Sprite.call(this, game, x, y, key, 0);
 };
@@ -18,6 +19,8 @@ SkiJump.Jumper.prototype.create = function() {
 };
 
 SkiJump.Jumper.prototype.update = function() {
+    var difference, strength;
+
     if (this.game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)) {
         if (this.inJumpArea()) {
             this.tryToJump = true;
@@ -37,11 +40,40 @@ SkiJump.Jumper.prototype.update = function() {
         this.finalJumpPower = this.jumpPower;
     }
 
-    if (this.game.input.keyboard.isDown(Phaser.Keyboard.A) && this.jumps < 2) {
-        //SkiJump.consts.BOOST_FACTOR
-        this.body.y = this.body.y - 2;
-        this.body.x = this.body.x + 2;
-        this.jumps += 1;
+
+    if (this.body.x >= SkiJump.consts.BOOSTER.startPositions[0] - SkiJump.consts.BOOSTER.area &&
+        this.body.x <= SkiJump.consts.BOOSTER.startPositions[0] + SkiJump.consts.BOOSTER.area &&
+        this.game.input.keyboard.isDown(Phaser.Keyboard.J) &&
+        this.jump1Done === false) {
+        this.jump1Done = true;
+
+        difference = 100 - Math.abs(SkiJump.consts.BOOSTER.startPositions[0] - this.body.x);
+        strength = (SkiJump.consts.BOOSTER.strength * (difference/100));
+
+        this.body.y = this.body.y - strength;
+        this.body.x = this.body.x + strength;
+
+        console.log(difference);
+        console.log(strength);
+    }
+
+    if (this.body.x >= SkiJump.consts.BOOSTER.startPositions[1] - SkiJump.consts.BOOSTER.area &&
+        this.body.x <= SkiJump.consts.BOOSTER.startPositions[1] + SkiJump.consts.BOOSTER.area &&
+        this.game.input.keyboard.isDown(Phaser.Keyboard.J) &&
+        this.jump2Done === false) {
+        this.jump2Done = true;
+
+        difference = 100 - Math.abs(SkiJump.consts.BOOSTER.startPositions[1] - this.body.x);
+        strength = (SkiJump.consts.BOOSTER.strength * (difference/100));
+
+        this.body.y = this.body.y - strength;
+        this.body.x = this.body.x + strength;
+        console.log(difference);
+        console.log(strength);
+    }
+
+    if (this.body.x > SkiJump.consts.BRAKING_AREA_START && this.game.input.keyboard.isDown(Phaser.Keyboard.S)) {
+        this.body.y -= 0.2;
     }
 };
 

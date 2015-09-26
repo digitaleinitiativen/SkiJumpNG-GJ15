@@ -53,7 +53,10 @@ SkiJump.State.prototype = {
         this.add.sprite(1600,1550, 'public');
         this.add.sprite(1440,1550, 'public');
         this.add.sprite(1900,1553, 'public');
-        this.add.sprite(SkiJump.consts.BOOSTER_1,1553, 'lightbeam');
+
+
+        this.add.tileSprite(SkiJump.consts.BOOSTER.startPositions[0], 0, SkiJump.consts.BOOSTER.width, SkiJump.consts.HEIGHT, 'lightbeam');
+        this.add.tileSprite(SkiJump.consts.BOOSTER.startPositions[1], 0, SkiJump.consts.BOOSTER.width, SkiJump.consts.HEIGHT, 'lightbeam');
         //this.firstStep = this.add.sprite(500, 300, 'sky');
 
         var style = {
@@ -110,7 +113,7 @@ SkiJump.State.prototype = {
                         if (this.jumper.body.x > SkiJump.consts.JUMP_AREA_END && !this.isLanded) {
                             this.meters = this.jumper.body.x - SkiJump.consts.JUMP_AREA_END;
                             this.isLanded = true;
-                            this.scorebox.text = parseInt(this.meters * SkiJump.consts.PIXEL_TO_METER) + ' Meter';
+                            this.scorebox.text = Number((this.meters * SkiJump.consts.PIXEL_TO_METER).toFixed(1)) + ' Meter';
                         }
                         break;
                 }
