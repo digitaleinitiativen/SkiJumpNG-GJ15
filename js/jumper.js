@@ -58,9 +58,6 @@ SkiJump.Jumper.prototype.update = function() {
 
         this.body.y = this.body.y - strength;
         this.body.x = this.body.x + strength;
-
-        console.log(difference);
-        console.log(strength);
     }
 
     if (this.body.x >= SkiJump.consts.BOOSTER.startPositions[1] - SkiJump.consts.BOOSTER.area &&
@@ -74,8 +71,6 @@ SkiJump.Jumper.prototype.update = function() {
 
         this.body.y = this.body.y - strength;
         this.body.x = this.body.x + strength;
-        console.log(difference);
-        console.log(strength);
     }
 
     if (this.body.x > SkiJump.consts.BRAKING_AREA_START && this.game.input.keyboard.isDown(Phaser.Keyboard.S)) {

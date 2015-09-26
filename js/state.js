@@ -6,6 +6,8 @@ SkiJump.Playing = function() {
     this.scoreBox = null;
     this.meters = 0;
     this.isLanded = false;
+    this.text1Displayed = false;
+    this.text2Displayed = false;
 };
 
 SkiJump.Playing.prototype = {
@@ -37,7 +39,7 @@ SkiJump.Playing.prototype = {
         this.add.sprite(1600,1400, 'mountain');
         this.add.sprite(1800,1250, 'mountain');
         this.add.sprite(1800,1250, 'mountain');
-        this.add.sprite(300,50, 'satellite');
+        this.add.sprite(1700,50, 'satellite');
         this.add.sprite(500,150, 'star');
         this.add.sprite(800,20, 'star');
         this.add.sprite(700,250, 'star');
@@ -57,14 +59,6 @@ SkiJump.Playing.prototype = {
 
         this.add.tileSprite(SkiJump.consts.BOOSTER.startPositions[0], 0, SkiJump.consts.BOOSTER.width, SkiJump.consts.HEIGHT, 'lightbeam');
         this.add.tileSprite(SkiJump.consts.BOOSTER.startPositions[1], 0, SkiJump.consts.BOOSTER.width, SkiJump.consts.HEIGHT, 'lightbeam');
-        //this.firstStep = this.add.sprite(500, 300, 'sky');
-
-        var style = {
-            fill: '#fff'
-        };
-
-        this.scorebox = this.add.text(10, 10, this.meters + ' Meter', style);
-        this.scorebox.fixedToCamera = true;
 
         this.world.setBounds(0, 0, SkiJump.consts.WIDTH, SkiJump.consts.HEIGHT);
 
@@ -95,10 +89,32 @@ SkiJump.Playing.prototype = {
         this.jumper.body.friction = 0.01;
 
         this.game.camera.follow(this.jumper);
+
+
+        var style = {
+            font: 'Comic Sans MS',
+            fontSize: '30px',
+            fontWeight: 'bold',
+            fill: '#fff',
+            stroke: '#000',
+            strokeThickness: 3
+        };
+
+        this.scorebox = this.add.text(10, 10, this.meters + ' Meter', style);
+        this.scorebox.fixedToCamera = true;
     },
 
     update: function() {
-        var angle = 0, pivotY = 0;
+        var angle = 0, 
+            pivotY = 0, 
+            fontStyle = {
+                font: 'Comic Sans MS',
+                fontSize: '28px',
+                fontWeight: 'bold',
+                fill: '#00ff00',
+                stroke: '#000',
+                strokeThickness: 3
+            };
 
         for (var i = 0; i < this.tiles.length; i++) {
             var hit = this.jumper.body.aabb.collideAABBVsTile(this.tiles[i].tile)
@@ -156,19 +172,37 @@ SkiJump.Playing.prototype = {
             this.hasJumped = true;
             this.jumper.body.y -= SkiJump.consts.BOOST_FACTOR * ((this.jumper.finalJumpPower > 0) ? (this.jumper.finalJumpPower / 100) : 0);
         }
+
+        if (this.jumper.jump1Done && this.text1Displayed === false) {
+            this.jumperText = this.add.text(256, 200, 'EXTRA BOOST!', fontStyle);
+            this.jumperText.fixedToCamera = true;
+            this.game.add.tween(this.jumperText).to({alpha: 0}, 1000, Phaser.Easing.Linear.None, true);
+
+            this.text1Displayed = true;
+        }
+
+        if (this.jumper.jump2Done && this.text2Displayed === false) {
+            
+            this.jumperText2 = this.add.text(256, 200, 'EXTRA BOOST!', fontStyle);
+            this.jumperText2.fixedToCamera = true;
+            this.game.add.tween(this.jumperText2).to({alpha: 0}, 1000, Phaser.Easing.Linear.None, true);
+            this.text2Displayed = true;
+        }
     }
 };
 
 SkiJump.Welcome = function() {};
 
 SkiJump.Welcome.prototype = {
-    this.scorebox = this.add.text(256, 256, 'Press Space power up and "J" at the right time to get boosted', {
-        font: 'MS Comic Sans',
-        fontSize: '20'
-    });
-
-    this.scorebox.fixedToCamera = true;
+    create: function() {
+        this.startText = this.add.text(0, 100, 'Press Space to power up and "J" at the\nright time to get boosted.\n\nPress "Enter" to (re)start!', {
+            font: 'Comic Sans MS',
+            fontSize: '30px',
+            fontWeight: 'bold',
+            fill: '#fff'
+        });
+    }
 };
 
-SkiJump.game.state.add('Welcome', SkiJump.Welcome);
+SkiJump.game.state.add('Welcome', SkiJump.Welcome, true);
 SkiJump.game.state.add('Playing', SkiJump.Playing);
