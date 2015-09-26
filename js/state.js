@@ -105,6 +105,11 @@ SkiJump.State.prototype = {
                     case 2:
                         angle = 45;
                         pivotY = -this.jumper.height * 0.2;
+                        if (this.jumper.body.x > SkiJump.consts.JUMP_AREA_END && !this.isLanded) {
+                            this.meters = this.jumper.body.x - SkiJump.consts.JUMP_AREA_END;
+                            this.isLanded = true;
+                            this.scorebox.text = parseInt(this.meters) + ' Meter';
+                        }
                         break;
                 }
 
@@ -113,12 +118,6 @@ SkiJump.State.prototype = {
                     this.jumper.body.friction = 0;
                 } else {
                     this.jumper.body.friction = 0.01;
-                }
-
-                if (this.jumper.body.x > SkiJump.consts.JUMP_AREA_END && !this.isLanded) {
-                    this.meters = this.jumper.body.x - SkiJump.consts.JUMP_AREA_END;
-                    this.isLanded = true;
-                    this.scorebox.text = parseInt(this.meters) + ' Meter';
                 }
             }
         }
