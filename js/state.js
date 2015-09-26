@@ -19,6 +19,7 @@ SkiJump.Playing.prototype = {
         this.text1Displayed = false;
         this.text2Displayed = false;
         this.applauseStarted = false;
+        this.satelliteStarted = false;
 
         if (this.jumper) {
             this.jumper.animations.play('start');
@@ -37,9 +38,12 @@ SkiJump.Playing.prototype = {
         this.load.image('public', 'assets/public.png');
         this.load.image('sky', 'assets/background.png');
         this.load.image('lightbeam', 'assets/lightbeam.png');
+        this.load.image('cloud1', 'assets/cloud1.png');
+        this.load.image('cloud2', 'assets/cloud2.png');
         this.load.audio('applause', ['assets/applause.ogg']);
         this.load.audio('checkpoint', ['assets/checkpoint.ogg']);
         this.load.audio('jump', ['assets/jump2.ogg']);
+        this.load.audio('satellite', ['assets/satellite.ogg']);
     },
 
     create: function() {
@@ -68,6 +72,10 @@ SkiJump.Playing.prototype = {
         this.add.sprite(1600, 1550, 'public');
         this.add.sprite(1440, 1550, 'public');
         this.add.sprite(1900, 1553, 'public');
+        this.add.sprite(1200, 1053, 'cloud1');
+        this.add.sprite(1500, 980, 'cloud1');
+        this.add.sprite(1300, 880, 'cloud2');
+        this.add.sprite(1130, 680, 'cloud2');
 
         this.add.tileSprite(SkiJump.consts.BOOSTER.startPositions[0], 0, SkiJump.consts.BOOSTER.width, SkiJump.consts.HEIGHT, 'lightbeam');
         this.add.tileSprite(SkiJump.consts.BOOSTER.startPositions[1], 0, SkiJump.consts.BOOSTER.width, SkiJump.consts.HEIGHT, 'lightbeam');
@@ -116,6 +124,7 @@ SkiJump.Playing.prototype = {
         this.checkpointSound = this.add.audio('checkpoint');
         this.applauseSound = this.add.audio('applause');
         this.jumpSound = this.add.audio('jump');
+        this.satelliteSound = this.add.audio('satellite');
     },
 
     update: function() {
@@ -208,6 +217,16 @@ SkiJump.Playing.prototype = {
             this.game.add.tween(this.jumperText2).to({alpha: 0}, 1000, Phaser.Easing.Linear.None, true);
             this.text2Displayed = true;
             this.checkpointSound.play();
+        }
+
+        if (this.jumper.body.x > SkiJump.consts.BRAKING_AREA_START &&
+            this.jumper.body.y < 300 &&
+            this.satelliteStarted === false) {
+            this.satelliteSound.loopFull();
+            this.satelliteStarted = true;
+        } else if(this.jumper.body.y > 300 && this.satelliteSound) {
+            this.satelliteSound.pause();
+            this.satelliteStarted = false;
         }
     }
 };
