@@ -5,15 +5,20 @@ SkiJump.Jumper = function(game, x, y, key) {
     this.hasJumpPower = false;
     this.tryToJump = false;
     this.jumps = 1;
+    this.hasFlew = false;
 
     Phaser.Sprite.call(this, game, x, y, key, 0);
+
+    this.animations.add('stand', [19], 1);
+    this.animations.add('landing', [15, 16, 17, 18, 19], 10);
+    this.animations.add('flying', [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], 20);
 };
 
 SkiJump.Jumper.prototype = Object.create(Phaser.Sprite.prototype);
 SkiJump.Jumper.prototype.constructor = SkiJump.Jumper;
 
 SkiJump.Jumper.prototype.create = function() {
-    this.animations.add('stand', [20], 1, false);
+
     this.physics.ninja.enable(this, this.width / 2);
 };
 

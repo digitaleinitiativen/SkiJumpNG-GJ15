@@ -24,6 +24,7 @@ SkiJump.State.prototype = {
         this.load.image('tree', 'assets/tree.png');
         this.load.image('public', 'assets/public.png');
         this.load.image('sky', 'assets/background.png');
+        this.load.image('lightbeam', 'assets/lightbeam.png');
     },
 
     create: function() {
@@ -52,6 +53,7 @@ SkiJump.State.prototype = {
         this.add.sprite(1600,1550, 'public');
         this.add.sprite(1440,1550, 'public');
         this.add.sprite(1900,1553, 'public');
+        this.add.sprite(SkiJump.consts.BOOSTER_1,1553, 'lightbeam');
         //this.firstStep = this.add.sprite(500, 300, 'sky');
 
         var style = {
@@ -78,10 +80,11 @@ SkiJump.State.prototype = {
 
         this.groundLayer.resizeWorld();
 
-        this.game.physics.ninja.gravity = 0.015;
+        this.game.physics.ninja.gravity = 0.15;
 
         // add the player to the stage
         this.jumper = new SkiJump.Jumper(this.game, 64, 64, 'jumper');
+
         this.game.add.existing(this.jumper);
         this.game.physics.ninja.enable(this.jumper);
         //this.game.physics.ninja.enable(this.firstStep);
@@ -105,6 +108,14 @@ SkiJump.State.prototype = {
                     case 2:
                         angle = 45;
                         pivotY = -this.jumper.height * 0.2;
+
+                        if (this.jumper.body.x > SkiJump.consts.JUMP_AREA_END && !this.isLanded) {
+                            this.meters = this.jumper.body.x - SkiJump.consts.JUMP_AREA_END;
+                            this.isLanded = true;
+                            this.scorebox.text = parseInt(this.meters * SkiJump.consts.PIXEL_TO_METER) + ' Meter';
+
+                            this.jumper.animations.play('landing');
+                        }
                         break;
                 }
 
@@ -114,21 +125,19 @@ SkiJump.State.prototype = {
                 } else {
                     this.jumper.body.friction = 0.01;
                 }
-
-                if (this.jumper.body.x > SkiJump.consts.JUMP_AREA_END && !this.isLanded) {
-                    this.meters = this.jumper.body.x - SkiJump.consts.JUMP_AREA_END;
-                    this.isLanded = true;
-                    this.scorebox.text = parseInt(this.meters) + ' Meter';
+            } else if (
+                this.jumper.body.x < SkiJump.consts.BRAKING_AREA_START &&
+                this.jumper.body.x > SkiJump.consts.JUMP_AREA_END
+            ) {
+                if (!this.jumper.hasFlew) {
+                    this.jumper.hasFlew = true;
+                    this.jumper.animations.play('flying');
                 }
             }
         }
 
         this.jumper.angle = angle;
         this.jumper.pivot.y = pivotY;
-
-        console.log(this.jumper.body.x);
-
-        this.jumper.body.touching.down;
 
         if (this.jumper.body.x > SkiJump.consts.BRAKING_AREA_START) {
             this.jumper.body.friction = 0.1;
@@ -139,6 +148,7 @@ SkiJump.State.prototype = {
             this.jumper.hasJumpPower &&
             !this.hasJumped
         ) {
+            console.log('LOL');
             this.hasJumped = true;
             this.jumper.body.y -= SkiJump.consts.BOOST_FACTOR * ((this.jumper.finalJumpPower > 0) ? (this.jumper.finalJumpPower / 100) : 0);
         }
