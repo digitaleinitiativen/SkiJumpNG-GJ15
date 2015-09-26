@@ -12,15 +12,14 @@ SkiJump.State.prototype = {
     preload: function() {
         this.load.spritesheet('jumper', 'assets/jumperdude.png', 64, 64, 20);
         this.load.tilemap('tilemap', 'assets/large-hill.json', null, Phaser.Tilemap.TILED_JSON);
-        this.load.image('sky', 'assets/sky2.png');
+        this.load.image('bg', 'assets/background_sky.png');
         this.load.image('tiles', 'assets/kenney.png');
     },
 
     create: function() {
         var slopeMap;
 
-        this.stage.backgroundColor = "#a9f0ff";
-
+        this.bg = this.add.tileSprite(0, 0, SkiJump.consts.WIDTH, SkiJump.consts.HEIGHT, 'bg');
         this.world.setBounds(0, 0, SkiJump.consts.WIDTH, SkiJump.consts.HEIGHT);
 
         //this.game.world.setBounds(0, 0, width, height);
@@ -64,6 +63,13 @@ SkiJump.State.prototype = {
                         angle = 45;
                         pivotY = -this.jumper.height * 0.2;
                         break;
+                }
+
+                if (this.tiles[i].tile.id === 1 && this.jumper.body.x < 800) {
+                    //remove friction for platform before jump
+                    this.jumper.body.friction = 0;
+                } else {
+                    this.jumper.body.friction = 0.01;
                 }
             }
         }
