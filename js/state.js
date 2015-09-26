@@ -78,7 +78,7 @@ SkiJump.State.prototype = {
 
         this.groundLayer.resizeWorld();
 
-        this.game.physics.ninja.gravity = 0.15;
+        this.game.physics.ninja.gravity = 0.015;
 
         // add the player to the stage
         this.jumper = new SkiJump.Jumper(this.game, 64, 64, 'jumper');
@@ -126,6 +126,8 @@ SkiJump.State.prototype = {
         this.jumper.angle = angle;
         this.jumper.pivot.y = pivotY;
 
+        console.log(this.jumper.body.x);
+
         this.jumper.body.touching.down;
 
         if (this.jumper.body.x > SkiJump.consts.BRAKING_AREA_START) {
@@ -137,7 +139,6 @@ SkiJump.State.prototype = {
             this.jumper.hasJumpPower &&
             !this.hasJumped
         ) {
-            console.log(this.jumper.finalJumpPower);
             this.hasJumped = true;
             this.jumper.body.y -= SkiJump.consts.BOOST_FACTOR * ((this.jumper.finalJumpPower > 0) ? (this.jumper.finalJumpPower / 100) : 0);
         }

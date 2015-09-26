@@ -8,7 +8,8 @@
     "grunt-serve": "^0.1.6"
   },
   "devDependencies": {
-    "grunt-serve": "^0.1.6"
+    "grunt-serve": "^0.1.6",
+    "underscore": "^1.8.3"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
