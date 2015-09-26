@@ -1,7 +1,7 @@
 var width = 2048;
-var height = 300;
+var height = 2048;
 
-var game = new Phaser.Game(width/2, height, Phaser.AUTO, 'game');
+var game = new Phaser.Game(width/2, height/2, Phaser.AUTO, 'game');
 
 var SkiJumpGame = function(game) {
     this.game = game;
@@ -20,7 +20,7 @@ SkiJumpGame.prototype = {
     },
 
     preload: function() {
-        this.load.baseURL = 'http://skijump.lo/';
+        this.load.baseURL = './';
         this.load.image('bg', 'assets/background.png');
         this.load.spritesheet('dude', 'assets/dude.png', 32, 48);
         this.load.image('star', 'assets/star.png');
@@ -29,7 +29,7 @@ SkiJumpGame.prototype = {
     create: function() {
         this.world.setBounds(0, 0, width, height);
 
-        this.bg = this.add.tileSprite(0, 0, width, height, 'bg');
+        this.bg = this.add.tileSprite(50, 0, width, height, 'bg');
         this.stars = this.add.group();
         this.dude = this.add.sprite(50, 0, 'dude');
         var style = {

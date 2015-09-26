@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="10" height="10" tilewidth="70" tileheight="70" nextobjectid="1">
+ <tileset firstgid="1" name="tiles128" tilewidth="70" tileheight="70" tilecount="147">
+  <image source="kenney.png" width="1470" height="490"/>
+ </tileset>
+ <layer name="GroundLayer" width="10" height="10">
+  <data encoding="base64" compression="zlib">
+   eJxrZCAO5ABxIxHqRIhUK0KkWhE0tU1EuGEoAwCAswSv
+  </data>
+ </layer>
+ <layer name="BackgroundLayer" width="10" height="10">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFgwkAAAGQAAE=
+  </data>
+ </layer>
+</map>

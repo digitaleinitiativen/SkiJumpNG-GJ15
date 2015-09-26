@@ -1,13 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>This is not the greatest game of the world, this is just a tribute!</title>
-</head>
-<body>
+    <head>
+        <meta charset="UTF-8">
+        <title>Skijump NG</title>
 
+        <style>
+            body {
+                text-align: center;
+                width: 100%;
+                background-color: #000;
+            }
 
-    <script src="vendor/phaser.js"></script>
-    <script src="js/example.js"></script>
-</body>
+            canvas {
+                margin-top: 30px;
+                display: inline-block !important;
+            }
+
+            .logo {
+                position: absolute;
+                left: 20px;
+                top: 20px;
+                width: 60px;
+            }
+        </style>
+    </head>
+    <body>
+        <image class="logo" src="./assets/logo.png"/>
+    </body>
+
+    <script src="vendor/phaser-ninja-physics.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/jumper.js"></script>
+    <script src="js/state.js"></script>
 </html>
