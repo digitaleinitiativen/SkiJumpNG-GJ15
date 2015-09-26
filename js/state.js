@@ -2,6 +2,7 @@ SkiJump.State = function() {
     this.bg = null;
     this.groundLayer = null;
     this.tiles = null;
+    this.hasJumped = false;
 };
 
 SkiJump.State.prototype = {
@@ -46,7 +47,6 @@ SkiJump.State.prototype = {
         this.game.physics.ninja.enable(this.jumper);
         this.jumper.body.bounce = 0;
         this.jumper.body.friction = 0.01;
-        //this.jumper.anchor = new Phaser.Point(0, -1);
         this.jumper.pivot = new Phaser.Point(1, 1);
 
         this.game.camera.follow(this.jumper);
@@ -54,6 +54,7 @@ SkiJump.State.prototype = {
 
     update: function() {
         var angle;
+
         for (var i = 0; i < this.tiles.length; i++) {
             var hit = this.jumper.body.aabb.collideAABBVsTile(this.tiles[i].tile)
             if (hit) {
@@ -67,11 +68,23 @@ SkiJump.State.prototype = {
                 }
             }
         }
+
         this.jumper.angle = angle;
 
         this.jumper.body.touching.down;
-        if (this.jumper.body.x > 1800) {
+
+        if (this.jumper.body.x > SkiJump.consts.BRAKING_AREA_START) {
             this.jumper.body.friction = 0.1;
+        }
+
+        if (
+            this.jumper.body.x >= SkiJump.consts.JUMP_AREA_END + 1 &&
+            this.jumper.hasJumpPower &&
+            !this.hasJumped
+        ) {
+            console.log(this.jumper.finalJumpPower);
+            this.hasJumped = true;
+            this.jumper.body.y -= SkiJump.consts.BOOST_FACTOR * (this.jumper.finalJumpPower > 0) ? (this.jumper.finalJumpPower / 100) : 0;
         }
     }
 };

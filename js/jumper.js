@@ -1,6 +1,9 @@
 SkiJump.Jumper = function(game, x, y, key) {
     this.game = game;
     this.jumpPower = 0;
+    this.finalJumpPower = 0;
+    this.hasJumpPower = false;
+    this.tryToJump = false;
 
     Phaser.Sprite.call(this, game, x, y, key, 0);
 };
@@ -16,13 +19,26 @@ SkiJump.Jumper.prototype.create = function() {
 
 SkiJump.Jumper.prototype.update = function() {
     if (this.game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)) {
-        if (
-            this.body.x >= SkiJump.consts.JUMP_AREA_START &&
-            this.body.x <= SkiJump.consts.JUMP_AREA_END
-        ) {
+        if (this.inJumpArea()) {
+            this.tryToJump = true;
             this.jumpPower += 5;
         } else {
             this.jumpPower -= 5;
         }
     }
+
+    if (
+        this.tryToJump &&
+        !this.game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR) && 
+        this.inJumpArea() &&
+        !this.hasJumpPower
+    ) {
+        this.hasJumpPower = true;
+        this.finalJumpPower = this.jumpPower;
+    }
+};
+
+SkiJump.Jumper.prototype.inJumpArea = function() {
+    return this.body.x >= SkiJump.consts.JUMP_AREA_START && 
+           this.body.x <= SkiJump.consts.JUMP_AREA_END;
 };
