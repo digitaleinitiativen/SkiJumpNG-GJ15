@@ -17,6 +17,8 @@ SkiJump.State.prototype = {
         this.load.image('mountain', 'assets/mountain_big.png');
         this.load.image('satellite', 'assets/satellite.png');
         this.load.image('star', 'assets/star.png');
+        this.load.image('tree', 'assets/tree.png');
+        this.load.image('public', 'assets/public.png');
     },
 
     create: function() {
@@ -35,6 +37,18 @@ SkiJump.State.prototype = {
         this.add.sprite(700,250, 'star');
         this.add.sprite(1200,250, 'star');
         this.add.sprite(850,400, 'star');
+        this.add.sprite(200,200, 'tree');
+        this.add.sprite(180,190, 'tree');
+        this.add.sprite(170,180, 'tree');
+        this.add.sprite(800,720, 'tree');
+        this.add.sprite(950,900, 'tree');
+        this.add.sprite(1000,950, 'tree');
+        this.add.sprite(1500,1420, 'tree');
+        this.add.sprite(1600,1550, 'public');
+        this.add.sprite(1440,1550, 'public');
+        this.add.sprite(1900,1553, 'public');
+
+
         this.world.setBounds(0, 0, SkiJump.consts.WIDTH, SkiJump.consts.HEIGHT);
 
         //this.game.world.setBounds(0, 0, width, height);
