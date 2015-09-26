@@ -9,6 +9,7 @@ SkiJump.Jumper.prototype.constructor = SkiJump.Jumper;
 
 SkiJump.Jumper.prototype.create = function() {
     this.anchor.setTo(0.5, 0);
+    this.physics.ninja.enable(this, this.width/2);
 };
 
 SkiJump.Jumper.prototype.update = function() {
