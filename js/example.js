@@ -20,7 +20,7 @@ SkiJumpGame.prototype = {
     },
 
     preload: function() {
-        this.load.baseURL = 'http://skijump.lo/';
+        this.load.baseURL = './';
         this.load.image('bg', 'assets/background.png');
         this.load.spritesheet('dude', 'assets/dude.png', 32, 48);
         this.load.image('star', 'assets/star.png');
