@@ -1,7 +1,7 @@
 var width = 2048;
 var height = 2048;
 
-var game = new Phaser.Game(width/2, height/2, Phaser.CANVAS, 'game');
+var game = new Phaser.Game(width/2, height/2, Phaser.AUTO, 'game');
 
 var hillVertices = [-200,-0,-130.128,5.08323,-89.0526,-0.105309,-31.5464,1.19183,1.31426,5.5156,
     50.6053,4.21846,87.7897,-2.26719,148.755,-4.42908,200,-0,251.899,4.99306,
@@ -31,7 +31,7 @@ var hillVertices = [-200,-0,-130.128,5.08323,-89.0526,-0.105309,-31.5464,1.19183
     4858.19,-1.45256,4896.91,5.9419,4925.06,31.9846,4960.49,17.0905,5006.14,15.8518,
     5050.86,24.3401,5078.48,41.8191,5498.61,41.7032,5499.5,-306.024];
 
-var Game = function(game) {
+SkiJump.Game = function(game) {
     this.game = game;
     this.bg = null;
     this.dude = null;
@@ -40,77 +40,38 @@ var Game = function(game) {
     this.scorebox = null;
     this.starCount = 0;
     this.hill = null;
+    this.layer = null;
+    this.tiles = null;
 };
 
-Game.prototype = {
+SkiJump.Game.prototype = {
     init: function() {
-        this.physics.startSystem(Phaser.Physics.BOX2D);
-        this.cursors = this.input.keyboard.createCursorKeys();
+        this.physics.startSystem(Phaser.Physics.NINJA);
     },
 
     preload: function() {
+        this.load.tilemap('map', 'assets/map.json', null, Phaser.Tilemap.TILED_JSON);
+        this.load.image('hill', 'assets/kenney.png');
+
         this.load.baseURL = 'http://skijump.lo/';
-        this.load.image('bg', 'assets/background.png');
-        this.load.spritesheet('dude', 'assets/dude.png', 32, 48);
-        this.load.image('star', 'assets/star.png');
     },
 
     create: function() {
         this.world.setBounds(0, 0, width, height);
-        this.hill = new Phaser.Physics.Box2D.Body(this.game, null, 0, 0, 0);
-        this.hill.setChain(hillVertices);
+        this.hill = this.add.tilemap('map');
+        this.hill.addTilesetImage('hill');
 
-        this.bg = this.add.tileSprite(0, 0, width, height, 'bg');
-        this.stars = this.add.group();
-        this.dude = this.add.sprite(50, 0, 'dude');
-        var style = {
-            fill: '#fff'
-        };
+        this.layer = this.hill.createLayer('Tile Layer 1');
 
-        this.scorebox = this.add.text(10, 10, this.starCount + ' Sterne', style);
-        this.scorebox.fixedToCamera = true;
+        this.layer.resizeWorld();
 
-        this.physics.enable(this.dude);
+        var slopeMap = {'32': 1, '77': 1, '95': 2, '36': 3, '137': 3, '140': 2};
 
-        this.stars.enableBody = true;
-
-        for (var i = 0; i < 40; i++) {
-            var star = this.stars.create(Math.random() * this.world.width, Math.random() * this.world.height, 'star');
-        }
-
-        this.dude.body.gravity.y = 700;
-        this.dude.body.collideWorldBounds = true;
-        this.dude.body.bounce.y = 0.2;
-
-        this.dude.animations.add('stand', [4], 1, false);
-        this.dude.animations.add('left', [0, 1, 2, 3], 10, true);
-        this.dude.animations.add('right', [5, 6, 7, 8], 10, true);
-
-        this.camera.follow(this.dude);
+        this.tiles = this.physics.ninja.convertTilemap(this.hill, this.layer, slopeMap);
     },
 
     update: function() {
-        this.physics.arcade.overlap(this.dude, this.stars, function(dude, star) {
-            this.starCount += 1;
-            this.scorebox.text = this.starCount + ' Sterne';
-            star.kill();
-        }.bind(this));
-
-        this.dude.body.velocity.x = 0;
-        if (this.cursors.right.isDown) {
-            this.dude.body.velocity.x = 500;
-            this.dude.animations.play('right');
-        } else if (this.cursors.left.isDown) {
-            this.dude.body.velocity.x = -500;
-            this.dude.animations.play('left');
-        } else {
-            this.dude.animations.play('stand');
-        }
-
-        if (this.cursors.up.isDown) {
-            this.dude.body.velocity.y = -500;
-        }
     }
 };
 
-game.state.add('Level One', Game, true);
+game.state.add('Level One', SkiJump.Game, true);
