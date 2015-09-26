@@ -1,19 +1,28 @@
 SkiJump.Playing = function() {
-    this.bg = null;
-    this.groundLayer = null;
-    this.tiles = null;
-    this.hasJumped = false;
-    this.scoreBox = null;
-    this.meters = 0;
-    this.isLanded = false;
-    this.text1Displayed = false;
-    this.text2Displayed = false;
-    this.applauseStarted = false;
+    this.reset();
 };
 
 SkiJump.Playing.prototype = {
     init: function() {
+        this.reset();
         this.physics.startSystem(Phaser.Physics.NINJA);
+    },
+
+    reset: function() {
+        this.bg = null;
+        this.groundLayer = null;
+        this.tiles = null;
+        this.hasJumped = false;
+        this.scoreBox = null;
+        this.meters = 0;
+        this.isLanded = false;
+        this.text1Displayed = false;
+        this.text2Displayed = false;
+        this.applauseStarted = false;
+
+        if (this.jumper) {
+            this.jumper.animations.play('start');
+        }
     },
 
     preload: function() {
@@ -194,7 +203,6 @@ SkiJump.Playing.prototype = {
         }
 
         if (this.jumper.jump2Done && this.text2Displayed === false) {
-            
             this.jumperText2 = this.add.text(256, 200, 'EXTRA BOOST!', fontStyle);
             this.jumperText2.fixedToCamera = true;
             this.game.add.tween(this.jumperText2).to({alpha: 0}, 1000, Phaser.Easing.Linear.None, true);

@@ -31,7 +31,7 @@
         }
 
         if (event.keyCode === 13) {
-            global.SkiJump.game.state.start('Playing');
+            global.SkiJump.game.state.start('Playing', true, true);
         }
     }, false);
 })(this)
