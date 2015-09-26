@@ -14,12 +14,27 @@ SkiJump.State.prototype = {
         this.load.tilemap('tilemap', 'assets/large-hill.json', null, Phaser.Tilemap.TILED_JSON);
         this.load.image('bg', 'assets/background_sky.png');
         this.load.image('tiles', 'assets/kenney.png');
+        this.load.image('mountain', 'assets/mountain_big.png');
+        this.load.image('satellite', 'assets/satellite.png');
+        this.load.image('star', 'assets/star.png');
     },
 
     create: function() {
         var slopeMap;
 
-        this.bg = this.add.tileSprite(0, 0, SkiJump.consts.WIDTH, SkiJump.consts.HEIGHT, 'bg');
+        this.bg = this.add.tileSprite(0, 0, SkiJump.consts.WIDTH+100, SkiJump.consts.HEIGHT, 'bg');
+        this.add.sprite(1000,1250, 'mountain');
+        this.add.sprite(1200,1350, 'mountain');
+        this.add.sprite(1400,1300, 'mountain');
+        this.add.sprite(1600,1400, 'mountain');
+        this.add.sprite(1800,1250, 'mountain');
+        this.add.sprite(1800,1250, 'mountain');
+        this.add.sprite(300,50, 'satellite');
+        this.add.sprite(500,150, 'star');
+        this.add.sprite(800,20, 'star');
+        this.add.sprite(700,250, 'star');
+        this.add.sprite(1200,250, 'star');
+        this.add.sprite(850,400, 'star');
         this.world.setBounds(0, 0, SkiJump.consts.WIDTH, SkiJump.consts.HEIGHT);
 
         //this.game.world.setBounds(0, 0, width, height);
@@ -37,7 +52,7 @@ SkiJump.State.prototype = {
 
         this.groundLayer.resizeWorld();
 
-        this.game.physics.ninja.gravity = 0.3;
+        this.game.physics.ninja.gravity = 0.15;
 
         // add the player to the stage
         this.jumper = new SkiJump.Jumper(this.game, 64, 64, 'jumper');
