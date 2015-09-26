@@ -3,9 +3,9 @@
         WIDTH: 2048,
         HEIGHT: 2048,
         BRAKING_AREA_START: 1800,
-        JUMP_AREA_START: 350,
-        JUMP_AREA_END: 450,
-        BOOST_FACTOR: 100
+        JUMP_AREA_START: 285,
+        JUMP_AREA_END: 360,
+        BOOST_FACTOR: 5
     };
 
     Phaser.InputHandler = true;

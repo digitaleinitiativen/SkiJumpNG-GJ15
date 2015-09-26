@@ -139,7 +139,7 @@ SkiJump.State.prototype = {
         ) {
             console.log(this.jumper.finalJumpPower);
             this.hasJumped = true;
-            this.jumper.body.y -= SkiJump.consts.BOOST_FACTOR * (this.jumper.finalJumpPower > 0) ? (this.jumper.finalJumpPower / 100) : 0;
+            this.jumper.body.y -= SkiJump.consts.BOOST_FACTOR * ((this.jumper.finalJumpPower > 0) ? (this.jumper.finalJumpPower / 100) : 0);
         }
     }
 };
