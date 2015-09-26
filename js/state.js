@@ -46,28 +46,29 @@ SkiJump.State.prototype = {
         this.game.physics.ninja.enable(this.jumper);
         this.jumper.body.bounce = 0;
         this.jumper.body.friction = 0.01;
-        //this.jumper.anchor = new Phaser.Point(0, -1);
-        this.jumper.pivot = new Phaser.Point(1, 1);
 
         this.game.camera.follow(this.jumper);
     },
 
     update: function() {
-        var angle;
+        var angle = 0, pivotY = 0;
         for (var i = 0; i < this.tiles.length; i++) {
             var hit = this.jumper.body.aabb.collideAABBVsTile(this.tiles[i].tile)
             if (hit) {
                 switch (this.tiles[i].tile.type) {
                     case 1:
                         angle = 0;
+                        pivotY = 0;
                         break;
                     case 2:
                         angle = 45;
+                        pivotY = -this.jumper.height * 0.2;
                         break;
                 }
             }
         }
         this.jumper.angle = angle;
+        this.jumper.pivot.y = pivotY;
 
         this.jumper.body.touching.down;
         if (this.jumper.body.x > 1800) {
