@@ -3,12 +3,12 @@ SkiJump.Playing = function() {
     this.groundLayer = null;
     this.tiles = null;
     this.hasJumped = false;
-    this.scoreBox = null;
     this.meters = 0;
     this.isLanded = false;
     this.text1Displayed = false;
     this.text2Displayed = false;
     this.applauseStarted = false;
+    this.satelliteStarted = false;
 };
 
 SkiJump.Playing.prototype = {
@@ -31,6 +31,7 @@ SkiJump.Playing.prototype = {
         this.load.audio('applause', ['assets/applause.ogg']);
         this.load.audio('checkpoint', ['assets/checkpoint.ogg']);
         this.load.audio('jump', ['assets/jump2.ogg']);
+        this.load.audio('satellite', ['assets/satellite.ogg']);
     },
 
     create: function() {
@@ -107,6 +108,7 @@ SkiJump.Playing.prototype = {
         this.checkpointSound = this.add.audio('checkpoint');
         this.applauseSound = this.add.audio('applause');
         this.jumpSound = this.add.audio('jump');
+        this.satelliteSound = this.add.audio('satellite');
     },
 
     update: function() {
@@ -200,6 +202,16 @@ SkiJump.Playing.prototype = {
             this.game.add.tween(this.jumperText2).to({alpha: 0}, 1000, Phaser.Easing.Linear.None, true);
             this.text2Displayed = true;
             this.checkpointSound.play();
+        }
+
+        if (this.jumper.body.x > SkiJump.consts.BRAKING_AREA_START &&
+            this.jumper.body.y < 300 &&
+            this.satelliteStarted === false) {
+            this.satelliteSound.loopFull();
+            this.satelliteStarted = true;
+        } else if(this.jumper.body.y > 300 && this.satelliteSound) {
+            this.satelliteSound.pause();
+            this.satelliteStarted = false;
         }
     }
 };
